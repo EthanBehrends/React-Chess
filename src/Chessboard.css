@@ -1,0 +1,26 @@
+#board {
+    width: 600px;
+    height:600px;
+    display: flex;
+    position: relative;
+}
+
+.white {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.black {
+    flex-direction: row-reverse;
+    flex-wrap: wrap-reverse;
+}
+
+#POVFlip {
+    width: 20px;
+    height: 20px;
+    border-radius: 40%;
+    position: absolute;
+    left: 20px;
+    bottom: -40px;
+    background-color: #082526;
+}

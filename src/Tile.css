@@ -1,0 +1,18 @@
+.tile {
+    width: 12.5%;
+    height:12.5%;
+    text-align: center;
+    line-height: 80px;
+}
+
+.dark {
+    background-color: #082526;
+}
+
+.light {
+    background-color: #63a8ab;
+}
+
+.selected {
+    opacity: .5;
+}
