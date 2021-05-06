@@ -2,7 +2,10 @@
     width: 12.5%;
     height:12.5%;
     text-align: center;
-    line-height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
 
 .dark {
@@ -15,4 +18,10 @@
 
 .selected {
     opacity: .5;
+}
+.label {
+    position: absolute;
+    bottom: 2px;
+    left: 2px;
+    font-size:.2em;
 }
