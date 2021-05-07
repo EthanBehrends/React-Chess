@@ -13,12 +13,26 @@ const defaultBoard = [
     ['R','N','B','Q','K','B','N','R']
 ]
 
+let playerIsWhite = true;
+
+let isPieceSelected = false;
+let pieceSelected;
+
+
+function pieceIsWhite(piece) {
+    return piece === piece.toUpperCase();
+}
+
 function charToInt(num) {
     return(String.fromCharCode(num + 64))
 }
 
 function keyToArray(key) {
     return([Number.parseInt(8- key.charAt(1)),key.charCodeAt(0) - 65])
+}
+
+function arrayToKey(array) {
+    return charToInt(array[1] + 1) + (8-array[0])
 }
 
 function Chessboard() {
@@ -29,14 +43,112 @@ function Chessboard() {
 
 
     function getPiece(key) {
-        console.log(keyToArray(key)[0] + " " + keyToArray(key)[1]);
         return (board[keyToArray(key)[0]][keyToArray(key)[1]]);
     }
 
     function possibleMoves(key) {
         const piece = getPiece(key);
-        const white = piece === piece.toUpperCase();
+        const coords = keyToArray(key);
         let moves = [];
+        switch (piece) {
+            case 'P':
+                if(coords[0] > 0 && getPiece(arrayToKey([coords[0]-1,coords[1]])) === '.') moves.push(arrayToKey([coords[0]-1,coords[1]]));
+                if(coords[0] > 0 && coords[1] > 0 && getPiece(arrayToKey([coords[0]-1,coords[1]-1])) !== '.') moves.push(arrayToKey([coords[0]-1,coords[1]-1]));
+                if(coords[0] > 0 && coords[1] < 7 && getPiece(arrayToKey([coords[0]-1,coords[1]+1])) !== '.') moves.push(arrayToKey([coords[0]-1,coords[1]+1]));
+                if(coords[0] === 6 && getPiece(arrayToKey([coords[0]-1,coords[1]])) === '.' && getPiece(arrayToKey([coords[0]-2,coords[1]])) === '.') moves.push(arrayToKey([coords[0]-2,coords[1]]));
+                return moves;
+                break;
+        
+            case 'p':
+                if(coords[0] < 7 && getPiece(arrayToKey([coords[0]+1,coords[1]])) === '.') moves.push(arrayToKey([coords[0]+1,coords[1]]));
+                if(coords[0] < 7 && coords[1] > 0 && getPiece(arrayToKey([coords[0]+1,coords[1]-1])) !== '.') moves.push(arrayToKey([coords[0]+1,coords[1]-1]));
+                if(coords[0] < 7 && coords[1] < 7 && getPiece(arrayToKey([coords[0]+1,coords[1]+1])) !== '.') moves.push(arrayToKey([coords[0]+1,coords[1]+1]));
+                if(coords[0] === 1 && getPiece(arrayToKey([coords[0]+1,coords[1]])) === '.' && getPiece(arrayToKey([coords[0]+2,coords[1]])) === '.') moves.push(arrayToKey([coords[0]+2,coords[1]]));
+                return moves;
+                break;
+        
+            case 'R':
+                for(let i=coords[0]+1;i<=7;i++) {
+                    if(getPiece(arrayToKey([i,coords[1]])) ==='.'){
+                        moves.push(arrayToKey([i,coords[1]]));
+                    }
+                    else {
+                        moves.push(arrayToKey([i,coords[1]]));
+                        break;
+                    }
+                }
+                for(let i=coords[0]-1;i>=0;i--) {
+                    if(getPiece(arrayToKey([i,coords[1]])) ==='.'){
+                        moves.push(arrayToKey([i,coords[1]]));
+                    }
+                    else {
+                        moves.push(arrayToKey([i,coords[1]]));
+                        break;
+                    }
+                }
+                for(let i=coords[1]+1;i<=7;i++) {
+                    if(getPiece(arrayToKey([coords[0],i])) ==='.'){
+                        moves.push(arrayToKey([coords[0],i]));
+                    }
+                    else {
+                        moves.push(arrayToKey([coords[0],i]));
+                        break;
+                    }
+                }
+                for(let i=coords[1]-1;i>=0;i--) {
+                    if(getPiece(arrayToKey([coords[0],i])) ==='.'){
+                        moves.push(arrayToKey([coords[0],i]));
+                    }
+                    else {
+                        moves.push(arrayToKey([coords[0],i]));
+                        break;
+                    }
+                }
+                return moves;
+            
+                case 'r':
+                    for(let i=coords[0]+1;i<=7;i++) {
+                        if(getPiece(arrayToKey([i,coords[1]])) ==='.'){
+                            moves.push(arrayToKey([i,coords[1]]));
+                        }
+                        else {
+                            moves.push(arrayToKey([i,coords[1]]));
+                            break;
+                        }
+                    }
+                    for(let i=coords[0]-1;i>=0;i--) {
+                        if(getPiece(arrayToKey([i,coords[1]])) ==='.'){
+                            moves.push(arrayToKey([i,coords[1]]));
+                        }
+                        else {
+                            moves.push(arrayToKey([i,coords[1]]));
+                            break;
+                        }
+                    }
+                    for(let i=coords[1]+1;i<=7;i++) {
+                        if(getPiece(arrayToKey([coords[0],i])) ==='.'){
+                            moves.push(arrayToKey([coords[0],i]));
+                        }
+                        else {
+                            moves.push(arrayToKey([coords[0],i]));
+                            break;
+                        }
+                    }
+                    for(let i=coords[1]-1;i>=0;i--) {
+                        if(getPiece(arrayToKey([coords[0],i])) ==='.'){
+                            moves.push(arrayToKey([coords[0],i]));
+                        }
+                        else {
+                            moves.push(arrayToKey([coords[0],i]));
+                            break;
+                        }
+                    }
+                    return moves;
+            
+                default:
+                return moves;
+                break;
+        }
 
     }
 
@@ -46,6 +158,23 @@ function Chessboard() {
         tempboard[keyToArray(iCoord)[0]][keyToArray(iCoord)[1]] = '.';
         setBoard(tempboard);
         forceUpdate();
+    }
+
+    const [curPossibleMoves,setPossibleMoves] = useState([]);
+    let select = (coord) => {
+        if(!isPieceSelected) {
+            if(getPiece(coord) === '.') return;
+            isPieceSelected = true;
+            pieceSelected = coord;
+            setPossibleMoves(possibleMoves(coord));
+        }
+        else {
+            if(curPossibleMoves.includes(coord)){
+                move(pieceSelected, coord);
+            }
+            isPieceSelected = false;
+            setPossibleMoves([])
+        }
     }
 
     const forceUpdate = useForceUpdate();
@@ -58,7 +187,14 @@ function Chessboard() {
             {
                 board.map((row, i) => {
                     return(row.map((cell, j) => {
-                        return(<Tile key={charToInt(8-i) + (j+1)} label={charToInt(8-i) + (j+1)} piece={board[7-j][7-i]} color={(i + j) % 2 === 1 ? 'dark' : 'light'}></Tile>);
+                        return(<Tile 
+                            key={charToInt(8-i) + (j+1)} 
+                            label={charToInt(8-i) + (j+1)} 
+                            piece={board[7-j][7-i]} 
+                            moveable={curPossibleMoves !== [] && curPossibleMoves.includes(charToInt(8-i) + (j+1))}
+                            color={(i + j) % 2 === 1 ? 'dark' : 'light'}
+                            select={select}
+                            ></Tile>);
                     }))
                 })
             }
