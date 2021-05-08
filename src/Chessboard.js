@@ -53,16 +53,16 @@ function Chessboard() {
         switch (piece) {
             case 'P':
                 if(coords[0] > 0 && getPiece(arrayToKey([coords[0]-1,coords[1]])) === '.') moves.push(arrayToKey([coords[0]-1,coords[1]]));
-                if(coords[0] > 0 && coords[1] > 0 && getPiece(arrayToKey([coords[0]-1,coords[1]-1])) !== '.') moves.push(arrayToKey([coords[0]-1,coords[1]-1]));
-                if(coords[0] > 0 && coords[1] < 7 && getPiece(arrayToKey([coords[0]-1,coords[1]+1])) !== '.') moves.push(arrayToKey([coords[0]-1,coords[1]+1]));
+                if(coords[0] > 0 && coords[1] > 0 && !pieceIsWhite(getPiece(arrayToKey([coords[0]-1,coords[1]-1]))) && getPiece(arrayToKey([coords[0]-1,coords[1]-1])) !== '.') moves.push(arrayToKey([coords[0]-1,coords[1]-1]));
+                if(coords[0] > 0 && coords[1] < 7 && !pieceIsWhite(getPiece(arrayToKey([coords[0]-1,coords[1]+1]))) && getPiece(arrayToKey([coords[0]-1,coords[1]+1])) !== '.') moves.push(arrayToKey([coords[0]-1,coords[1]+1]));
                 if(coords[0] === 6 && getPiece(arrayToKey([coords[0]-1,coords[1]])) === '.' && getPiece(arrayToKey([coords[0]-2,coords[1]])) === '.') moves.push(arrayToKey([coords[0]-2,coords[1]]));
                 return moves;
                 break;
         
             case 'p':
                 if(coords[0] < 7 && getPiece(arrayToKey([coords[0]+1,coords[1]])) === '.') moves.push(arrayToKey([coords[0]+1,coords[1]]));
-                if(coords[0] < 7 && coords[1] > 0 && getPiece(arrayToKey([coords[0]+1,coords[1]-1])) !== '.') moves.push(arrayToKey([coords[0]+1,coords[1]-1]));
-                if(coords[0] < 7 && coords[1] < 7 && getPiece(arrayToKey([coords[0]+1,coords[1]+1])) !== '.') moves.push(arrayToKey([coords[0]+1,coords[1]+1]));
+                if(coords[0] < 7 && coords[1] > 0 && pieceIsWhite(getPiece(arrayToKey([coords[0]+1,coords[1]-1]))) && getPiece(arrayToKey([coords[0]+1,coords[1]-1])) !== '.') moves.push(arrayToKey([coords[0]+1,coords[1]-1]));
+                if(coords[0] < 7 && coords[1] < 7 && pieceIsWhite(getPiece(arrayToKey([coords[0]+1,coords[1]+1]))) && getPiece(arrayToKey([coords[0]+1,coords[1]+1])) !== '.') moves.push(arrayToKey([coords[0]+1,coords[1]+1]));
                 if(coords[0] === 1 && getPiece(arrayToKey([coords[0]+1,coords[1]])) === '.' && getPiece(arrayToKey([coords[0]+2,coords[1]])) === '.') moves.push(arrayToKey([coords[0]+2,coords[1]]));
                 return moves;
                 break;
@@ -73,7 +73,7 @@ function Chessboard() {
                         moves.push(arrayToKey([i,coords[1]]));
                     }
                     else {
-                        moves.push(arrayToKey([i,coords[1]]));
+                        if(!pieceIsWhite(getPiece(arrayToKey([i,coords[1]])))) moves.push(arrayToKey([i,coords[1]]));
                         break;
                     }
                 }
@@ -82,7 +82,7 @@ function Chessboard() {
                         moves.push(arrayToKey([i,coords[1]]));
                     }
                     else {
-                        moves.push(arrayToKey([i,coords[1]]));
+                        if(!pieceIsWhite(getPiece(arrayToKey([i,coords[1]])))) moves.push(arrayToKey([i,coords[1]]));
                         break;
                     }
                 }
@@ -91,7 +91,7 @@ function Chessboard() {
                         moves.push(arrayToKey([coords[0],i]));
                     }
                     else {
-                        moves.push(arrayToKey([coords[0],i]));
+                        if(!pieceIsWhite(getPiece(arrayToKey([coords[0],i])))) moves.push(arrayToKey([coords[0],i]));
                         break;
                     }
                 }
@@ -100,28 +100,28 @@ function Chessboard() {
                         moves.push(arrayToKey([coords[0],i]));
                     }
                     else {
-                        moves.push(arrayToKey([coords[0],i]));
+                        if(!pieceIsWhite(getPiece(arrayToKey([coords[0],i])))) moves.push(arrayToKey([coords[0],i]));
                         break;
                     }
                 }
                 return moves;
             
-                case 'r':
-                    for(let i=coords[0]+1;i<=7;i++) {
-                        if(getPiece(arrayToKey([i,coords[1]])) ==='.'){
-                            moves.push(arrayToKey([i,coords[1]]));
-                        }
-                        else {
-                            moves.push(arrayToKey([i,coords[1]]));
-                            break;
-                        }
+            case 'r':
+                for(let i=coords[0]+1;i<=7;i++) {
+                    if(getPiece(arrayToKey([i,coords[1]])) ==='.'){
+                        moves.push(arrayToKey([i,coords[1]]));
                     }
-                    for(let i=coords[0]-1;i>=0;i--) {
+                    else {
+                        if(pieceIsWhite(getPiece(arrayToKey([i,coords[1]])))) moves.push(arrayToKey([i,coords[1]]));
+                        break;
+                    }
+                }
+                for(let i=coords[0]-1;i>=0;i--) {
                         if(getPiece(arrayToKey([i,coords[1]])) ==='.'){
                             moves.push(arrayToKey([i,coords[1]]));
                         }
                         else {
-                            moves.push(arrayToKey([i,coords[1]]));
+                            if(pieceIsWhite(getPiece(arrayToKey([i,coords[1]])))) moves.push(arrayToKey([i,coords[1]]));
                             break;
                         }
                     }
@@ -130,7 +130,7 @@ function Chessboard() {
                             moves.push(arrayToKey([coords[0],i]));
                         }
                         else {
-                            moves.push(arrayToKey([coords[0],i]));
+                            if(pieceIsWhite(getPiece(arrayToKey([coords[0],i])))) moves.push(arrayToKey([coords[0],i]));
                             break;
                         }
                     }
@@ -139,12 +139,341 @@ function Chessboard() {
                             moves.push(arrayToKey([coords[0],i]));
                         }
                         else {
-                            moves.push(arrayToKey([coords[0],i]));
+                            if(pieceIsWhite(getPiece(arrayToKey([coords[0],i])))) moves.push(arrayToKey([coords[0],i]));
                             break;
                         }
                     }
                     return moves;
             
+                case 'N':
+                    if((coords[0] + 2 <= 7) && (coords[1] + 1 <= 7) && (!pieceIsWhite(getPiece(arrayToKey([coords[0] + 2, coords[1] + 1]))) || getPiece(arrayToKey([coords[0] + 2, coords[1] + 1])) === '.')) moves.push(arrayToKey([coords[0] + 2, coords[1] + 1]));
+                    if((coords[0] + 2 <= 7) && (coords[1] - 1 >= 0) && (!pieceIsWhite(getPiece(arrayToKey([coords[0] + 2, coords[1] - 1]))) || getPiece(arrayToKey([coords[0] + 2, coords[1] - 1])) === '.')) moves.push(arrayToKey([coords[0] + 2, coords[1] - 1]));
+                    if((coords[0] - 2 >= 0) && (coords[1] + 1 <= 7) && (!pieceIsWhite(getPiece(arrayToKey([coords[0] - 2, coords[1] + 1]))) || getPiece(arrayToKey([coords[0] - 2, coords[1] + 1])) === '.')) moves.push(arrayToKey([coords[0] - 2, coords[1] + 1]));
+                    if((coords[0] - 2 >= 0) && (coords[1] - 1 >= 0) && (!pieceIsWhite(getPiece(arrayToKey([coords[0] - 2, coords[1] - 1]))) || getPiece(arrayToKey([coords[0] - 2, coords[1] - 1])) === '.')) moves.push(arrayToKey([coords[0] - 2, coords[1] - 1]));
+                    if((coords[0] + 1 <= 7) && (coords[1] + 2 <= 7) && (!pieceIsWhite(getPiece(arrayToKey([coords[0] + 1, coords[1] + 2]))) || getPiece(arrayToKey([coords[0] + 1, coords[1] + 2])) === '.')) moves.push(arrayToKey([coords[0] + 1, coords[1] + 2]));
+                    if((coords[0] + 1 <= 7) && (coords[1] - 2 >= 0) && (!pieceIsWhite(getPiece(arrayToKey([coords[0] + 1, coords[1] - 2]))) || getPiece(arrayToKey([coords[0] + 1, coords[1] - 2])) === '.')) moves.push(arrayToKey([coords[0] + 1, coords[1] - 2]));
+                    if((coords[0] - 1 >= 0) && (coords[1] + 2 <= 7) && (!pieceIsWhite(getPiece(arrayToKey([coords[0] - 1, coords[1] + 2]))) || getPiece(arrayToKey([coords[0] - 1, coords[1] + 2])) === '.')) moves.push(arrayToKey([coords[0] - 1, coords[1] + 2]));
+                    if((coords[0] - 1 >= 0) && (coords[1] - 2 >= 0) && (!pieceIsWhite(getPiece(arrayToKey([coords[0] - 1, coords[1] - 2]))) || getPiece(arrayToKey([coords[0] - 1, coords[1] - 2])) === '.')) moves.push(arrayToKey([coords[0] - 1, coords[1] - 2]));
+                    return moves;
+
+                case 'n':
+                    if((coords[0] + 2 <= 7) && (coords[1] + 1 <= 7) && (pieceIsWhite(getPiece(arrayToKey([coords[0] + 2, coords[1] + 1]))) || getPiece(arrayToKey([coords[0] + 2, coords[1] + 1])) === '.')) moves.push(arrayToKey([coords[0] + 2, coords[1] + 1]));
+                    if((coords[0] + 2 <= 7) && (coords[1] - 1 >= 0) && (pieceIsWhite(getPiece(arrayToKey([coords[0] + 2, coords[1] - 1]))) || getPiece(arrayToKey([coords[0] + 2, coords[1] - 1])) === '.')) moves.push(arrayToKey([coords[0] + 2, coords[1] - 1]));
+                    if((coords[0] - 2 >= 0) && (coords[1] + 1 <= 7) && (pieceIsWhite(getPiece(arrayToKey([coords[0] - 2, coords[1] + 1]))) || getPiece(arrayToKey([coords[0] - 2, coords[1] + 1])) === '.')) moves.push(arrayToKey([coords[0] - 2, coords[1] + 1]));
+                    if((coords[0] - 2 >= 0) && (coords[1] - 1 >= 0) && (pieceIsWhite(getPiece(arrayToKey([coords[0] - 2, coords[1] - 1]))) || getPiece(arrayToKey([coords[0] - 2, coords[1] - 1])) === '.')) moves.push(arrayToKey([coords[0] - 2, coords[1] - 1]));
+                    if((coords[0] + 1 <= 7) && (coords[1] + 2 <= 7) && (pieceIsWhite(getPiece(arrayToKey([coords[0] + 1, coords[1] + 2]))) || getPiece(arrayToKey([coords[0] + 1, coords[1] + 2])) === '.')) moves.push(arrayToKey([coords[0] + 1, coords[1] + 2]));
+                    if((coords[0] + 1 <= 7) && (coords[1] - 2 >= 0) && (pieceIsWhite(getPiece(arrayToKey([coords[0] + 1, coords[1] - 2]))) || getPiece(arrayToKey([coords[0] + 1, coords[1] - 2])) === '.')) moves.push(arrayToKey([coords[0] + 1, coords[1] - 2]));
+                    if((coords[0] - 1 >= 0) && (coords[1] + 2 <= 7) && (pieceIsWhite(getPiece(arrayToKey([coords[0] - 1, coords[1] + 2]))) || getPiece(arrayToKey([coords[0] - 1, coords[1] + 2])) === '.')) moves.push(arrayToKey([coords[0] - 1, coords[1] + 2]));
+                    if((coords[0] - 1 >= 0) && (coords[1] - 2 >= 0) && (pieceIsWhite(getPiece(arrayToKey([coords[0] - 1, coords[1] - 2]))) || getPiece(arrayToKey([coords[0] - 1, coords[1] - 2])) === '.')) moves.push(arrayToKey([coords[0] - 1, coords[1] - 2]));
+                    return moves;
+
+                case 'B':
+                    for(let i = 1; i <= 7; i++) {
+                        if(coords[0] + i <= 7 && coords[1] + i <= 7) {
+                            if(getPiece(arrayToKey([coords[0]+i,coords[1]+i])) === '.') {
+                                moves.push(arrayToKey([coords[0]+i,coords[1]+i]));
+                            }
+                            else if(pieceIsWhite(getPiece(arrayToKey([coords[0]+i,coords[1]+i])))) {
+                                break;
+                            }
+                            else if(!pieceIsWhite(getPiece(arrayToKey([coords[0]+i,coords[1]+i])))){
+                                moves.push(arrayToKey([coords[0]+i,coords[1]+i]));
+                                break;
+                            }
+                        }
+                    }
+                    for(let i = 1; i <= 7; i++) {
+                        if(coords[0] + i <= 7 && coords[1] - i >= 0) {
+                            if(getPiece(arrayToKey([coords[0]+i,coords[1]-i])) === '.') {
+                                moves.push(arrayToKey([coords[0]+i,coords[1]-i]));
+                            }
+                            else if(pieceIsWhite(getPiece(arrayToKey([coords[0]+i,coords[1]-i])))) {
+                                break;
+                            }
+                            else if(!pieceIsWhite(getPiece(arrayToKey([coords[0]+i,coords[1]-i])))){
+                                moves.push(arrayToKey([coords[0]+i,coords[1]-i]));
+                                break;
+                            }
+                        }
+                    }
+                    for(let i = 1; i <= 7; i++) {
+                        if(coords[0] - i >= 0 && coords[1] + i <= 7) {
+                            if(getPiece(arrayToKey([coords[0]-i,coords[1]+i])) === '.') {
+                                moves.push(arrayToKey([coords[0]-i,coords[1]+i]));
+                            }
+                            else if(pieceIsWhite(getPiece(arrayToKey([coords[0]-i,coords[1]+i])))) {
+                                break;
+                            }
+                            else if(!pieceIsWhite(getPiece(arrayToKey([coords[0]-i,coords[1]+i])))){
+                                moves.push(arrayToKey([coords[0]-i,coords[1]+i]));
+                                break;
+                            }
+                        }
+                    }
+                    for(let i = 1; i <= 7; i++) {
+                        if(coords[0] - i >= 0 && coords[1] - i >= 0) {
+                            if(getPiece(arrayToKey([coords[0]-i,coords[1]-i])) === '.') {
+                                moves.push(arrayToKey([coords[0]-i,coords[1]-i]));
+                            }
+                            else if(pieceIsWhite(getPiece(arrayToKey([coords[0]-i,coords[1]-i])))) {
+                                break;
+                            }
+                            else if(!pieceIsWhite(getPiece(arrayToKey([coords[0]-i,coords[1]-i])))){
+                                moves.push(arrayToKey([coords[0]-i,coords[1]-i]));
+                                break;
+                            }
+                        }
+                    }
+                    return moves;
+
+                case 'b':
+                    for(let i = 1; i <= 7; i++) {
+                        if(coords[0] + i <= 7 && coords[1] + i <= 7) {
+                            if(getPiece(arrayToKey([coords[0]+i,coords[1]+i])) === '.') {
+                                moves.push(arrayToKey([coords[0]+i,coords[1]+i]));
+                            }
+                            else if(!pieceIsWhite(getPiece(arrayToKey([coords[0]+i,coords[1]+i])))) {
+                                break;
+                            }
+                            else if(pieceIsWhite(getPiece(arrayToKey([coords[0]+i,coords[1]+i])))){
+                                moves.push(arrayToKey([coords[0]+i,coords[1]+i]));
+                                break;
+                            }
+                        }
+                    }
+                    for(let i = 1; i <= 7; i++) {
+                        if(coords[0] + i <= 7 && coords[1] - i >= 0) {
+                            if(getPiece(arrayToKey([coords[0]+i,coords[1]-i])) === '.') {
+                                moves.push(arrayToKey([coords[0]+i,coords[1]-i]));
+                            }
+                            else if(!pieceIsWhite(getPiece(arrayToKey([coords[0]+i,coords[1]-i])))) {
+                                break;
+                            }
+                            else if(pieceIsWhite(getPiece(arrayToKey([coords[0]+i,coords[1]-i])))){
+                                moves.push(arrayToKey([coords[0]+i,coords[1]-i]));
+                                break;
+                            }
+                        }
+                    }
+                    for(let i = 1; i <= 7; i++) {
+                        if(coords[0] - i >= 0 && coords[1] + i <= 7) {
+                            if(getPiece(arrayToKey([coords[0]-i,coords[1]+i])) === '.') {
+                                moves.push(arrayToKey([coords[0]-i,coords[1]+i]));
+                            }
+                            else if(!pieceIsWhite(getPiece(arrayToKey([coords[0]-i,coords[1]+i])))) {
+                                break;
+                            }
+                            else if(pieceIsWhite(getPiece(arrayToKey([coords[0]-i,coords[1]+i])))){
+                                moves.push(arrayToKey([coords[0]-i,coords[1]+i]));
+                                break;
+                            }
+                        }
+                    }
+                    for(let i = 1; i <= 7; i++) {
+                        if(coords[0] - i >= 0 && coords[1] - i >= 0) {
+                            if(getPiece(arrayToKey([coords[0]-i,coords[1]-i])) === '.') {
+                                moves.push(arrayToKey([coords[0]-i,coords[1]-i]));
+                            }
+                            else if(!pieceIsWhite(getPiece(arrayToKey([coords[0]-i,coords[1]-i])))) {
+                                break;
+                            }
+                            else if(pieceIsWhite(getPiece(arrayToKey([coords[0]-i,coords[1]-i])))){
+                                moves.push(arrayToKey([coords[0]-i,coords[1]-i]));
+                                break;
+                            }
+                        }
+                    }
+                    return moves;
+                
+                case 'Q':
+                    for(let i=coords[0]+1;i<=7;i++) {
+                        if(getPiece(arrayToKey([i,coords[1]])) ==='.'){
+                            moves.push(arrayToKey([i,coords[1]]));
+                        }
+                        else {
+                            if(!pieceIsWhite(getPiece(arrayToKey([i,coords[1]])))) moves.push(arrayToKey([i,coords[1]]));
+                            break;
+                        }
+                    }
+                    for(let i=coords[0]-1;i>=0;i--) {
+                        if(getPiece(arrayToKey([i,coords[1]])) ==='.'){
+                            moves.push(arrayToKey([i,coords[1]]));
+                        }
+                        else {
+                            if(!pieceIsWhite(getPiece(arrayToKey([i,coords[1]])))) moves.push(arrayToKey([i,coords[1]]));
+                            break;
+                        }
+                    }
+                    for(let i=coords[1]+1;i<=7;i++) {
+                        if(getPiece(arrayToKey([coords[0],i])) ==='.'){
+                            moves.push(arrayToKey([coords[0],i]));
+                        }
+                        else {
+                            if(!pieceIsWhite(getPiece(arrayToKey([coords[0],i])))) moves.push(arrayToKey([coords[0],i]));
+                            break;
+                        }
+                    }
+                    for(let i=coords[1]-1;i>=0;i--) {
+                        if(getPiece(arrayToKey([coords[0],i])) ==='.'){
+                            moves.push(arrayToKey([coords[0],i]));
+                        }
+                        else {
+                            if(!pieceIsWhite(getPiece(arrayToKey([coords[0],i])))) moves.push(arrayToKey([coords[0],i]));
+                            break;
+                        }
+                    }
+                    for(let i = 1; i <= 7; i++) {
+                        if(coords[0] + i <= 7 && coords[1] + i <= 7) {
+                            if(getPiece(arrayToKey([coords[0]+i,coords[1]+i])) === '.') {
+                                moves.push(arrayToKey([coords[0]+i,coords[1]+i]));
+                            }
+                            else if(pieceIsWhite(getPiece(arrayToKey([coords[0]+i,coords[1]+i])))) {
+                                break;
+                            }
+                            else if(!pieceIsWhite(getPiece(arrayToKey([coords[0]+i,coords[1]+i])))){
+                                moves.push(arrayToKey([coords[0]+i,coords[1]+i]));
+                                break;
+                            }
+                        }
+                    }
+                    for(let i = 1; i <= 7; i++) {
+                        if(coords[0] + i <= 7 && coords[1] - i >= 0) {
+                            if(getPiece(arrayToKey([coords[0]+i,coords[1]-i])) === '.') {
+                                moves.push(arrayToKey([coords[0]+i,coords[1]-i]));
+                            }
+                            else if(pieceIsWhite(getPiece(arrayToKey([coords[0]+i,coords[1]-i])))) {
+                                break;
+                            }
+                            else if(!pieceIsWhite(getPiece(arrayToKey([coords[0]+i,coords[1]-i])))){
+                                moves.push(arrayToKey([coords[0]+i,coords[1]-i]));
+                                break;
+                            }
+                        }
+                    }
+                    for(let i = 1; i <= 7; i++) {
+                        if(coords[0] - i >= 0 && coords[1] + i <= 7) {
+                            if(getPiece(arrayToKey([coords[0]-i,coords[1]+i])) === '.') {
+                                moves.push(arrayToKey([coords[0]-i,coords[1]+i]));
+                            }
+                            else if(pieceIsWhite(getPiece(arrayToKey([coords[0]-i,coords[1]+i])))) {
+                                break;
+                            }
+                            else if(!pieceIsWhite(getPiece(arrayToKey([coords[0]-i,coords[1]+i])))){
+                                moves.push(arrayToKey([coords[0]-i,coords[1]+i]));
+                                break;
+                            }
+                        }
+                    }
+                    for(let i = 1; i <= 7; i++) {
+                        if(coords[0] - i >= 0 && coords[1] - i >= 0) {
+                            if(getPiece(arrayToKey([coords[0]-i,coords[1]-i])) === '.') {
+                                moves.push(arrayToKey([coords[0]-i,coords[1]-i]));
+                            }
+                            else if(pieceIsWhite(getPiece(arrayToKey([coords[0]-i,coords[1]-i])))) {
+                                break;
+                            }
+                            else if(!pieceIsWhite(getPiece(arrayToKey([coords[0]-i,coords[1]-i])))){
+                                moves.push(arrayToKey([coords[0]-i,coords[1]-i]));
+                                break;
+                            }
+                        }
+                    }
+                    return moves;
+
+                case 'q':
+                    for(let i=coords[0]+1;i<=7;i++) {
+                        if(getPiece(arrayToKey([i,coords[1]])) ==='.'){
+                            moves.push(arrayToKey([i,coords[1]]));
+                        }
+                        else {
+                            if(pieceIsWhite(getPiece(arrayToKey([i,coords[1]])))) moves.push(arrayToKey([i,coords[1]]));
+                            break;
+                        }
+                    }
+                    for(let i=coords[0]-1;i>=0;i--) {
+                            if(getPiece(arrayToKey([i,coords[1]])) ==='.'){
+                                moves.push(arrayToKey([i,coords[1]]));
+                            }
+                            else {
+                                if(pieceIsWhite(getPiece(arrayToKey([i,coords[1]])))) moves.push(arrayToKey([i,coords[1]]));
+                                break;
+                            }
+                        }
+                        for(let i=coords[1]+1;i<=7;i++) {
+                            if(getPiece(arrayToKey([coords[0],i])) ==='.'){
+                                moves.push(arrayToKey([coords[0],i]));
+                            }
+                            else {
+                                if(pieceIsWhite(getPiece(arrayToKey([coords[0],i])))) moves.push(arrayToKey([coords[0],i]));
+                                break;
+                            }
+                        }
+                        for(let i=coords[1]-1;i>=0;i--) {
+                            if(getPiece(arrayToKey([coords[0],i])) ==='.'){
+                                moves.push(arrayToKey([coords[0],i]));
+                            }
+                            else {
+                                if(pieceIsWhite(getPiece(arrayToKey([coords[0],i])))) moves.push(arrayToKey([coords[0],i]));
+                                break;
+                            }
+                        }
+                        for(let i = 1; i <= 7; i++) {
+                            if(coords[0] + i <= 7 && coords[1] + i <= 7) {
+                                if(getPiece(arrayToKey([coords[0]+i,coords[1]+i])) === '.') {
+                                    moves.push(arrayToKey([coords[0]+i,coords[1]+i]));
+                                }
+                                else if(!pieceIsWhite(getPiece(arrayToKey([coords[0]+i,coords[1]+i])))) {
+                                    break;
+                                }
+                                else if(pieceIsWhite(getPiece(arrayToKey([coords[0]+i,coords[1]+i])))){
+                                    moves.push(arrayToKey([coords[0]+i,coords[1]+i]));
+                                    break;
+                                }
+                            }
+                        }
+                        for(let i = 1; i <= 7; i++) {
+                            if(coords[0] + i <= 7 && coords[1] - i >= 0) {
+                                if(getPiece(arrayToKey([coords[0]+i,coords[1]-i])) === '.') {
+                                    moves.push(arrayToKey([coords[0]+i,coords[1]-i]));
+                                }
+                                else if(!pieceIsWhite(getPiece(arrayToKey([coords[0]+i,coords[1]-i])))) {
+                                    break;
+                                }
+                                else if(pieceIsWhite(getPiece(arrayToKey([coords[0]+i,coords[1]-i])))){
+                                    moves.push(arrayToKey([coords[0]+i,coords[1]-i]));
+                                    break;
+                                }
+                            }
+                        }
+                        for(let i = 1; i <= 7; i++) {
+                            if(coords[0] - i >= 0 && coords[1] + i <= 7) {
+                                if(getPiece(arrayToKey([coords[0]-i,coords[1]+i])) === '.') {
+                                    moves.push(arrayToKey([coords[0]-i,coords[1]+i]));
+                                }
+                                else if(!pieceIsWhite(getPiece(arrayToKey([coords[0]-i,coords[1]+i])))) {
+                                    break;
+                                }
+                                else if(pieceIsWhite(getPiece(arrayToKey([coords[0]-i,coords[1]+i])))){
+                                    moves.push(arrayToKey([coords[0]-i,coords[1]+i]));
+                                    break;
+                                }
+                            }
+                        }
+                        for(let i = 1; i <= 7; i++) {
+                            if(coords[0] - i >= 0 && coords[1] - i >= 0) {
+                                if(getPiece(arrayToKey([coords[0]-i,coords[1]-i])) === '.') {
+                                    moves.push(arrayToKey([coords[0]-i,coords[1]-i]));
+                                }
+                                else if(!pieceIsWhite(getPiece(arrayToKey([coords[0]-i,coords[1]-i])))) {
+                                    break;
+                                }
+                                else if(pieceIsWhite(getPiece(arrayToKey([coords[0]-i,coords[1]-i])))){
+                                    moves.push(arrayToKey([coords[0]-i,coords[1]-i]));
+                                    break;
+                                }
+                            }
+                        }
+                        return moves;
                 default:
                 return moves;
                 break;
