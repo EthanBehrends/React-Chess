@@ -14,7 +14,7 @@ const defaultBoard = [
 ]
 
 let playerIsWhite = true;
-
+let whitesTurn = true;
 let isPieceSelected = false;
 let pieceSelected;
 
@@ -474,6 +474,62 @@ function Chessboard() {
                             }
                         }
                         return moves;
+
+                case 'K':
+                    if(coords[0] - 1 >= 0) {
+                        if(coords[1] - 1 >= 0) {
+                            if(!pieceIsWhite(getPiece(arrayToKey([coords[0]-1,coords[1]-1]))) || getPiece(arrayToKey([coords[0]-1,coords[1]-1])) === '.') moves.push(arrayToKey([coords[0]-1,coords[1]-1]));
+                        }
+                        if(!pieceIsWhite(getPiece(arrayToKey([coords[0]-1,coords[1]]))) || getPiece(arrayToKey([coords[0]-1,coords[1]])) === '.') moves.push(arrayToKey([coords[0]-1,coords[1]]));
+                        if(coords[1] + 1 <= 7) {
+                            if(!pieceIsWhite(getPiece(arrayToKey([coords[0]-1,coords[1]+1]))) || getPiece(arrayToKey([coords[0]-1,coords[1]+1])) === '.') moves.push(arrayToKey([coords[0]-1,coords[1]+1]));
+                        }
+                    }
+                    if(coords[0] + 1 <= 7) {
+                        if(coords[1] - 1 >= 0) {
+                            if(!pieceIsWhite(getPiece(arrayToKey([coords[0]+1,coords[1]-1]))) || getPiece(arrayToKey([coords[0]+1,coords[1]-1])) === '.') moves.push(arrayToKey([coords[0]+1,coords[1]-1]));
+                        }
+                        if(!pieceIsWhite(getPiece(arrayToKey([coords[0]+1,coords[1]]))) || getPiece(arrayToKey([coords[0]+1,coords[1]])) === '.') moves.push(arrayToKey([coords[0]+1,coords[1]]));
+                        if(coords[1] + 1 <= 7) {
+                            if(!pieceIsWhite(getPiece(arrayToKey([coords[0]+1,coords[1]+1]))) || getPiece(arrayToKey([coords[0]+1,coords[1]+1])) === '.') moves.push(arrayToKey([coords[0]+1,coords[1]+1]));
+                        }
+                    }
+                    if(coords[1] - 1 >= 0) {
+                        if(!pieceIsWhite(getPiece(arrayToKey([coords[0],coords[1]-1]))) || getPiece(arrayToKey([coords[0],coords[1]-1])) === '.') moves.push(arrayToKey([coords[0],coords[1]-1]));
+                    }
+                    if(coords[1] + 1 <= 7) {
+                        if(!pieceIsWhite(getPiece(arrayToKey([coords[0],coords[1]+1]))) || getPiece(arrayToKey([coords[0],coords[1]+1])) === '.') moves.push(arrayToKey([coords[0],coords[1]+1]));
+                    }
+
+                    return moves;
+
+                    case 'k':
+                        if(coords[0] - 1 >= 0) {
+                            if(coords[1] - 1 >= 0) {
+                                if(pieceIsWhite(getPiece(arrayToKey([coords[0]-1,coords[1]-1]))) || getPiece(arrayToKey([coords[0]-1,coords[1]-1])) === '.') moves.push(arrayToKey([coords[0]-1,coords[1]-1]));
+                            }
+                            if(pieceIsWhite(getPiece(arrayToKey([coords[0]-1,coords[1]]))) || getPiece(arrayToKey([coords[0]-1,coords[1]])) === '.') moves.push(arrayToKey([coords[0]-1,coords[1]]));
+                            if(coords[1] + 1 <= 7) {
+                                if(pieceIsWhite(getPiece(arrayToKey([coords[0]-1,coords[1]+1]))) || getPiece(arrayToKey([coords[0]-1,coords[1]+1])) === '.') moves.push(arrayToKey([coords[0]-1,coords[1]+1]));
+                            }
+                        }
+                        if(coords[0] + 1 <= 7) {
+                            if(coords[1] - 1 >= 0) {
+                                if(pieceIsWhite(getPiece(arrayToKey([coords[0]+1,coords[1]-1]))) || getPiece(arrayToKey([coords[0]+1,coords[1]-1])) === '.') moves.push(arrayToKey([coords[0]+1,coords[1]-1]));
+                            }
+                            if(pieceIsWhite(getPiece(arrayToKey([coords[0]+1,coords[1]]))) || getPiece(arrayToKey([coords[0]+1,coords[1]])) === '.') moves.push(arrayToKey([coords[0]+1,coords[1]]));
+                            if(coords[1] + 1 <= 7) {
+                                if(pieceIsWhite(getPiece(arrayToKey([coords[0]+1,coords[1]+1]))) || getPiece(arrayToKey([coords[0]+1,coords[1]+1])) === '.') moves.push(arrayToKey([coords[0]+1,coords[1]+1]));
+                            }
+                        }
+                        if(coords[1] - 1 >= 0) {
+                            if(pieceIsWhite(getPiece(arrayToKey([coords[0],coords[1]-1]))) || getPiece(arrayToKey([coords[0],coords[1]-1])) === '.') moves.push(arrayToKey([coords[0],coords[1]-1]));
+                        }
+                        if(coords[1] + 1 <= 7) {
+                            if(pieceIsWhite(getPiece(arrayToKey([coords[0],coords[1]+1]))) || getPiece(arrayToKey([coords[0],coords[1]+1])) === '.') moves.push(arrayToKey([coords[0],coords[1]+1]));
+                        }
+                        return moves;
+
                 default:
                 return moves;
                 break;
@@ -487,12 +543,13 @@ function Chessboard() {
         tempboard[keyToArray(iCoord)[0]][keyToArray(iCoord)[1]] = '.';
         setBoard(tempboard);
         forceUpdate();
+        whitesTurn = !whitesTurn;
     }
 
     const [curPossibleMoves,setPossibleMoves] = useState([]);
     let select = (coord) => {
-        if(!isPieceSelected) {
-            if(getPiece(coord) === '.') return;
+        if(!isPieceSelected || curPossibleMoves === []) {
+            if(getPiece(coord) === '.' || pieceIsWhite(getPiece(coord)) !== whitesTurn) return;
             isPieceSelected = true;
             pieceSelected = coord;
             setPossibleMoves(possibleMoves(coord));
