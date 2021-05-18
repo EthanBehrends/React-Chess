@@ -1,7 +1,7 @@
 import './Chessboard.css';
 import Tile from './Tile.js';
 import PieceTray from './PieceTray.js'
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 
 const defaultBoard = [
     ['r','n','b','q','k','b','n','r'],
@@ -16,6 +16,7 @@ const defaultBoard = [
 
 let capturedPieces = "";
 
+let active = false;
 let playerIsWhite = true;
 let whitesTurn = true;
 let isPieceSelected = false;
@@ -41,7 +42,17 @@ function arrayToKey(array) {
     return charToInt(array[1] + 1) + (8-array[0])
 }
 
-function Chessboard() {
+function Chessboard(props) {
+    useEffect(() => {
+        if(props.socket !== undefined){
+            props.socket.on("makeMove", data => {
+                console.log(data);
+                if (data.from !== props.socket.id) opponentMove(data.start, data.end);
+            })
+        }
+        
+    })
+
     function useForceUpdate(){
         const [value, setValue] = useState(0); // integer state
         return () => setValue(value => value + 1); // update the state to force render
@@ -577,6 +588,20 @@ function Chessboard() {
         tempboard[keyToArray(fCoord)[0]][keyToArray(fCoord)[1]] = tempboard[keyToArray(iCoord)[0]][keyToArray(iCoord)[1]];
         tempboard[keyToArray(iCoord)[0]][keyToArray(iCoord)[1]] = '.';
         setBoard(tempboard);
+        props.socket.emit('move', {from: props.socket.id, start: iCoord, end: fCoord});
+        forceUpdate();
+        whitesTurn = !whitesTurn;
+    }
+
+    function opponentMove(iCoord, fCoord) {
+        if(getPiece(iCoord) === '.') return;
+        let tempboard = board;
+        if(getPiece(iCoord) === 'K') whiteKing = fCoord;
+        if(getPiece(iCoord) === 'k') blackKing = fCoord;
+        if(getPiece(fCoord) !== '.') capturedPieces += (getPiece(fCoord));
+        tempboard[keyToArray(fCoord)[0]][keyToArray(fCoord)[1]] = tempboard[keyToArray(iCoord)[0]][keyToArray(iCoord)[1]];
+        tempboard[keyToArray(iCoord)[0]][keyToArray(iCoord)[1]] = '.';
+        setBoard(tempboard);
         forceUpdate();
         whitesTurn = !whitesTurn;
     }
@@ -593,7 +618,7 @@ function Chessboard() {
 
     const [curPossibleMoves,setPossibleMoves] = useState([]);
     let select = (coord) => {
-        if(!isPieceSelected || curPossibleMoves.length === 0) {
+        if(active && (!isPieceSelected || curPossibleMoves.length === 0)) {
             let isWhite = pieceIsWhite(getPiece(coord));
             if(getPiece(coord) === '.' || isWhite !== whitesTurn) return;
             isPieceSelected = true;
