@@ -17,7 +17,6 @@ const defaultBoard = [
 let capturedPieces = "";
 
 let active = false;
-let playerIsWhite = true;
 let whitesTurn = true;
 let isPieceSelected = false;
 let pieceSelected;
@@ -45,6 +44,7 @@ function arrayToKey(array) {
 function Chessboard(props) {
     useEffect(() => {
         if(props.socket !== undefined){
+            props.socket.on("joined", data => active = true);
             props.socket.on("makeMove", data => {
                 console.log(data);
                 if (data.from !== props.socket.id) opponentMove(data.start, data.end);
@@ -52,6 +52,10 @@ function Chessboard(props) {
         }
         
     })
+
+    useEffect(() => {
+        setWhitePOV(props.isWhite)
+    }, [props.isWhite]);
 
     function useForceUpdate(){
         const [value, setValue] = useState(0); // integer state
@@ -588,7 +592,7 @@ function Chessboard(props) {
         tempboard[keyToArray(fCoord)[0]][keyToArray(fCoord)[1]] = tempboard[keyToArray(iCoord)[0]][keyToArray(iCoord)[1]];
         tempboard[keyToArray(iCoord)[0]][keyToArray(iCoord)[1]] = '.';
         setBoard(tempboard);
-        props.socket.emit('move', {from: props.socket.id, start: iCoord, end: fCoord});
+        props.socket.emit('move', {room:props.room, start: iCoord, end: fCoord});
         forceUpdate();
         whitesTurn = !whitesTurn;
     }
@@ -618,23 +622,25 @@ function Chessboard(props) {
 
     const [curPossibleMoves,setPossibleMoves] = useState([]);
     let select = (coord) => {
-        if(active && (!isPieceSelected || curPossibleMoves.length === 0)) {
-            let isWhite = pieceIsWhite(getPiece(coord));
-            if(getPiece(coord) === '.' || isWhite !== whitesTurn) return;
-            isPieceSelected = true;
-            pieceSelected = coord;
-            let pseudoMoves = possibleMoves(coord);
-            pseudoMoves = pseudoMoves.filter(move => testMove(coord,move,board));
-            setPossibleMoves(pseudoMoves);
-        }
-        else {
-            if(curPossibleMoves.includes(coord)){
-                move(pieceSelected, coord);
-                if (checkForCheckmate(pieceIsWhite(pieceSelected) ? 'black' : 'white')) endGame(pieceIsWhite(pieceSelected) ? 'white' : 'black');
+        if (active && (whitesTurn === props.isWhite)) {
+            if((!isPieceSelected || curPossibleMoves.length === 0)) {
+                let isWhite = pieceIsWhite(getPiece(coord));
+                if(getPiece(coord) === '.' || isWhite !== whitesTurn) return;
+                isPieceSelected = true;
+                pieceSelected = coord;
+                let pseudoMoves = possibleMoves(coord);
+                pseudoMoves = pseudoMoves.filter(move => testMove(coord,move,board));
+                setPossibleMoves(pseudoMoves);
             }
-            isPieceSelected = false;
-            setPossibleMoves([])
-        }
+            else {
+                if(curPossibleMoves.includes(coord)){
+                    move(pieceSelected, coord);
+                    if (checkForCheckmate(pieceIsWhite(pieceSelected) ? 'black' : 'white')) endGame(pieceIsWhite(pieceSelected) ? 'white' : 'black');
+                }
+                isPieceSelected = false;
+                setPossibleMoves([])
+            }
+        } 
     }
 
     function endGame(winner) {
@@ -644,7 +650,9 @@ function Chessboard(props) {
     const forceUpdate = useForceUpdate();
 
     const [board, setBoard] = useState(defaultBoard);
-    const [whitePOV, setWhitePOV] = useState(true);
+    const [whitePOV, setWhitePOV] = useState(props.isWhite);
+
+
 
     return(
         <div id="field" >
