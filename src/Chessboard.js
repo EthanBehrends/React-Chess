@@ -49,6 +49,7 @@ function Chessboard(props) {
                 console.log(data);
                 if (data.from !== props.socket.id) opponentMove(data.start, data.end);
             })
+            props.socket.on("gameover", () => active=false)
             props.socket.on('disconnected', data=> {
                 active=false;
             })
@@ -638,7 +639,7 @@ function Chessboard(props) {
             else {
                 if(curPossibleMoves.includes(coord)){
                     move(pieceSelected, coord);
-                    if (checkForCheckmate(pieceIsWhite(pieceSelected) ? 'black' : 'white')) endGame(pieceIsWhite(pieceSelected) ? 'white' : 'black');
+                    if (checkForCheckmate(pieceIsWhite(pieceSelected) ? 'black' : 'white')) endGame("Checkmate, " + (pieceIsWhite(pieceSelected) ? 'white' : 'black') + " wins");
                 }
                 isPieceSelected = false;
                 setPossibleMoves([])
@@ -646,8 +647,11 @@ function Chessboard(props) {
         } 
     }
 
-    function endGame(winner) {
-        alert("Checkmate, " + winner + " wins.");
+    function endGame(tagline) {
+        active=false;
+        if(props.socket !== undefined) {
+            props.socket.emit("endGame", {room: props.room, tagline: tagline})
+        }
     }
 
     const forceUpdate = useForceUpdate();

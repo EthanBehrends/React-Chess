@@ -31,6 +31,16 @@ export default function Connector(props) {
         )
     }
 
+    function rematchPromp (tagline) {
+        return (
+            <div id="connectorPopup">
+                <h1>{tagline}</h1>
+                <button>Rematch</button>
+                <button>New Game</button>
+            </div>
+        )
+    } 
+
     function Join() {
         const roomRef = useRef(null);
 
@@ -51,12 +61,17 @@ export default function Connector(props) {
     }
 
     const [menu, setMenu] = useState('main');
+    const [tagline, setTagline] = useState("");
 
     useEffect(() => {
         if(props.socket !== undefined) {
             props.socket.on('joined', data => {
                 setMenu('clear');
             });
+            props.socket.on("gameover", data => {
+                setTagline(data);
+                setMenu('gameover');
+            })
             props.socket.on('disconnected', data => {
                 setMenu('opponentLeft');
             });
@@ -80,6 +95,15 @@ export default function Connector(props) {
                         <button onClick={() => {window.location.reload()}}>Reload</button>
                     </div>
                 )
+                break;
+            case 'gameover': 
+                return(
+                    <div id="connectorPopup">
+                        <h2>{tagline}</h2>
+                        <button>Rematch</button>
+                    </div>
+                )
+                break;
             case 'clear':
                 return null;
                 break;
