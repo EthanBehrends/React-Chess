@@ -49,6 +49,9 @@ function Chessboard(props) {
                 console.log(data);
                 if (data.from !== props.socket.id) opponentMove(data.start, data.end);
             })
+            props.socket.on('disconnected', data=> {
+                active=false;
+            })
         }
         
     })

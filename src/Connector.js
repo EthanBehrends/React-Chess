@@ -57,6 +57,9 @@ export default function Connector(props) {
             props.socket.on('joined', data => {
                 setMenu('clear');
             });
+            props.socket.on('disconnected', data => {
+                setMenu('opponentLeft');
+            });
         }
     })
 
@@ -70,8 +73,16 @@ export default function Connector(props) {
             case 'join':
                 return(<Join />)
                 break;
+            case 'opponentLeft':
+                return(
+                    <div id="connectorPopup">
+                        Opponent left the match, click here to refresh the page.
+                        <button onClick={() => {window.location.reload()}}>Reload</button>
+                    </div>
+                )
             case 'clear':
                 return null;
+                break;
             default:
                 break;
             }
