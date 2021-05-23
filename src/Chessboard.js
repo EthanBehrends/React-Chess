@@ -50,6 +50,12 @@ function Chessboard(props) {
                 if (data.from !== props.socket.id) opponentMove(data.start, data.end);
             })
             props.socket.on("gameover", () => active=false)
+            props.socket.on("startMatch", () => {
+                props.setIsWhite(!props.isWhite);
+                whitesTurn = true;
+                active=true;
+                resetBoard();
+            })
             props.socket.on('disconnected', data=> {
                 active=false;
             })
@@ -76,6 +82,11 @@ function Chessboard(props) {
         return pieces;
     }
 
+    function resetBoard() {
+        setBoard(defaultBoard);
+        forceUpdate();
+    }
+    
     function pieceIsThreatened(key, b = board) {
         let enemyMoves = [];
         getKeysForColor(pieceIsWhite(getPiece(key,b)) ? 'black' : 'white',b).map(key => {enemyMoves.push(possibleMoves(key,b))});
@@ -664,7 +675,7 @@ function Chessboard(props) {
 
     const forceUpdate = useForceUpdate();
 
-    const [board, setBoard] = useState(defaultBoard);
+    const [board, setBoard] = useState(JSON.parse(JSON.stringify(defaultBoard)));
     const [whitePOV, setWhitePOV] = useState(props.isWhite);
 
 

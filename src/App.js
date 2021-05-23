@@ -44,7 +44,7 @@ function App() {
 
   return (
     <div id="wrapper">
-      <Chessboard isWhite={isWhite} isHost={isHost} room={room} socket={socket} />
+      <Chessboard isWhite={isWhite} setIsWhite={setIsWhite} isHost={isHost} room={room} socket={socket} />
       <Connector joinRoom={joinRoom} createRoom={createRoom} room={room} socket={socket} />
     </div>
   );

@@ -9,6 +9,15 @@ function generateCode() {
 export default function Connector(props) {
     const [formCode, setFormCode] = useState("");
 
+    function rematch() {
+        if(oppRematch) {
+            props.socket.emit("rematchAcc", {room: props.room});
+        }
+        else {
+            props.socket.emit("rematchReq", {room: props.room})
+        }
+    }
+
     function MainMenu() {
         return (
             <div id="connectorPopup">
@@ -59,7 +68,7 @@ export default function Connector(props) {
             </div>
         )
     }
-
+    const [oppRematch, setOppRematch] = useState(false);
     const [menu, setMenu] = useState('main');
     const [tagline, setTagline] = useState("");
 
@@ -71,7 +80,14 @@ export default function Connector(props) {
             props.socket.on("gameover", data => {
                 setTagline(data);
                 setMenu('gameover');
-            })
+            });
+            props.socket.on("rematchRequested", data => {
+                setOppRematch(true);
+            });
+            props.socket.on("startMatch", data => {
+                setOppRematch(false);
+                setMenu('clear');
+            });
             props.socket.on('disconnected', data => {
                 setMenu('opponentLeft');
             });
@@ -100,7 +116,7 @@ export default function Connector(props) {
                 return(
                     <div id="connectorPopup">
                         <h2>{tagline}</h2>
-                        <button>Rematch</button>
+                        <button onClick={rematch}>Rematch</button>
                     </div>
                 )
                 break;
