@@ -88,13 +88,20 @@ function Chessboard(props) {
     }
 
     function checkForCheckmate(color) {
+        let boardCopy = JSON.parse(JSON.stringify(board));
         let piece = (color === 'white' ? whiteKing : blackKing);
         if(pieceIsThreatened(piece)){
-            let pseudoMoves = possibleMoves(piece);
-            pseudoMoves = pseudoMoves.filter(move => testMove(piece,move,board));
+            let pseudoMoves = possibleMoves(piece,boardCopy);
+            pseudoMoves = pseudoMoves.filter(move => testMove(piece,move,boardCopy));
             if(pseudoMoves.length === 0) return true;
         }
         return false;
+    }
+
+    function checkForStalemate(color) {
+        let boardCopy = JSON.parse(JSON.stringify(board));
+        let moves = getKeysForColor(color,boardCopy).map(i => possibleMoves(i,boardCopy).filter(x=>testMove(i,x,boardCopy))).flat();
+        return moves.length === 0;
     }
 
     function possibleMoves(key,board) {
@@ -639,7 +646,8 @@ function Chessboard(props) {
             else {
                 if(curPossibleMoves.includes(coord)){
                     move(pieceSelected, coord);
-                    if (checkForCheckmate(pieceIsWhite(pieceSelected) ? 'black' : 'white')) endGame("Checkmate, " + (pieceIsWhite(pieceSelected) ? 'white' : 'black') + " wins");
+                    if (checkForCheckmate(pieceIsWhite(pieceSelected) ? 'black' : 'white')) endGame("Checkmate, " + (pieceIsWhite(pieceSelected) ? 'white' : 'black') + " wins.");
+                    if (checkForStalemate(pieceIsWhite(pieceSelected) ? 'black' : 'white')) endGame("Stalemate, match is a draw.");
                 }
                 isPieceSelected = false;
                 setPossibleMoves([])
