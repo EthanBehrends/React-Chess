@@ -1,7 +1,7 @@
 .tray {
     width: 100%;
     height: 50px;
-    background-color: gray;
+    background-color: #141b1f;
     color: white;
     display: flex;
     align-items: center;
@@ -13,7 +13,7 @@
     border-radius: .5em .5em 0em 0em;
 }
 .bottom {
-    border-radius: 0em 0em .5em .5em;
+    border-radius: 0em 0em 0em .5em;
 }
 
 .pieceCont {

@@ -1,12 +1,23 @@
 #field {
     position: relative;
+
+    filter: drop-shadow(0 0 1em #75a4ba);
 }
 
 #board {
     width: 550px;
     height:550px;
+    box-sizing: border-box;
+    border: .5em solid #141b1f;
     display: flex;
     position: relative;
+}
+
+@media screen and (max-width: 550px) {
+    #board {
+        max-width: 100vw;
+        max-height: 100vw;
+    }
 }
 
 .white {
@@ -20,11 +31,15 @@
 }
 
 #POVFlip {
-    width: 20px;
-    height: 20px;
-    border-radius: 40%;
+    width: 30px;
+    height: 30px;
+    border-radius: 0 0 .5em .5em;
     position: absolute;
-    left: 20px;
+    right: 0px;
     bottom: -30px;
-    background-color: #082526;
+    background-color: #141b1f;
+    background-image: url('flip.svg');
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: center center;
 }

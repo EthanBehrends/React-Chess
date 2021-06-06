@@ -20,6 +20,11 @@ function App() {
     socket.emit("host",{room: r, hostIsWhite: white});
   }
 
+  function unhost() {
+    socket.emit("unhost", {room: room});
+    setRoom("");
+  }
+
   function joinRoom(r) {
     setRoom(r);
     setIsHost(false);
@@ -45,7 +50,7 @@ function App() {
   return (
     <div id="wrapper">
       <Chessboard isWhite={isWhite} setIsWhite={setIsWhite} isHost={isHost} room={room} socket={socket} />
-      <Connector joinRoom={joinRoom} createRoom={createRoom} room={room} socket={socket} />
+      <Connector joinRoom={joinRoom} createRoom={createRoom} unhost={unhost} room={room} socket={socket} />
     </div>
   );
 }

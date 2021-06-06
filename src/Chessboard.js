@@ -692,6 +692,7 @@ function Chessboard(props) {
                                 label={charToInt(8-i) + (j+1)} 
                                 piece={board[7-j][7-i]} 
                                 moveable={curPossibleMoves !== [] && curPossibleMoves.includes(charToInt(8-i) + (j+1))}
+                                threatened={(charToInt(8-i) + (j+1) === whiteKing && pieceIsThreatened(whiteKing)) || (charToInt(8-i) + (j+1) === blackKing && pieceIsThreatened(blackKing)) ? true : false}
                                 color={(i + j) % 2 === 1 ? 'dark' : 'light'}
                                 select={select}
                                 ></Tile>);

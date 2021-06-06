@@ -34,6 +34,7 @@ export default function Connector(props) {
     function Hosting() {
         return (
             <div id="connectorPopup">
+                <div className="back" onClick={() => {props.unhost();setMenu('main')}}></div>
                 <h1>{props.room}</h1>
                 <h4>Waiting for other player</h4>
             </div>
@@ -59,7 +60,7 @@ export default function Connector(props) {
 
         return(
             <div id="connectorPopup">
-                <div id="back" onClick={() => setMenu('main')}></div>
+                <div className="back" onClick={() => setMenu('main')}></div>
                 <h2>Join a Game</h2>
                 <form onSubmit={event => {props.joinRoom(formCode);event.preventDefault()}}>
                     <input ref={roomRef} name="room" key="text" type="textarea" value={formCode} onChange={event => {setFormCode(event.target.value)}} placeholder="Enter code"></input>

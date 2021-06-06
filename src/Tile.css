@@ -9,11 +9,11 @@
 }
 
 .dark {
-    background-color: #082526;
+    background-color: #354A54;
 }
 
 .light {
-    background-color: #63a8ab;
+    background-color: #75a4ba;
 }
 
 .selected {
@@ -24,14 +24,25 @@
     bottom: 2px;
     left: 2px;
     font-size:.2em;
+    opacity: .2;
+    user-select: none;
 }
 
 .moveable {
     width: 25%;
     height: 25%;
     border-radius: 50%;
-    background-color: green;
+    background-color: #38825d;
+    z-index: 2;
     position: absolute;
     top: 37.5%;
     left: 37.5%;
+}
+
+.threatened {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    box-shadow:0 0 40px #9e4444 inset;
+    opacity: .6;
 }
