@@ -102,9 +102,8 @@ function Chessboard(props) {
         let boardCopy = JSON.parse(JSON.stringify(board));
         let piece = (color === 'white' ? whiteKing : blackKing);
         if(pieceIsThreatened(piece)){
-            let pseudoMoves = possibleMoves(piece,boardCopy);
-            pseudoMoves = pseudoMoves.filter(move => testMove(piece,move,boardCopy));
-            if(pseudoMoves.length === 0) return true;
+            let moves = getKeysForColor(color,boardCopy).map(i => possibleMoves(i,boardCopy).filter(x=>testMove(i,x,boardCopy))).flat();
+            if(moves.length === 0) return true;
         }
         return false;
     }
