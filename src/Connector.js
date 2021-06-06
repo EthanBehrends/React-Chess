@@ -62,8 +62,8 @@ export default function Connector(props) {
             <div id="connectorPopup">
                 <div className="back" onClick={() => setMenu('main')}></div>
                 <h2>Join a Game</h2>
-                <form onSubmit={event => {props.joinRoom(formCode);event.preventDefault()}}>
-                    <input ref={roomRef} name="room" key="text" type="textarea" value={formCode} onChange={event => {setFormCode(event.target.value)}} placeholder="Enter code"></input>
+                <form autocomplete="off" onSubmit={event => {props.joinRoom(formCode.toUpperCase());event.preventDefault()}}>
+                    <input maxlength={6} ref={roomRef} name="room" key="text" type="textarea" value={formCode} onChange={event => {setFormCode(event.target.value)}} placeholder="Enter code"></input>
                     <input type="submit" value="Join"></input>
                 </form>
             </div>

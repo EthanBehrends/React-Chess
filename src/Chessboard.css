@@ -1,7 +1,6 @@
 #field {
     position: relative;
-
-    filter: drop-shadow(0 0 1em #75a4ba);
+    filter: drop-shadow(0 0 .5em #75a4ba88);
 }
 
 #board {

@@ -15,6 +15,8 @@
     background-color:#141b1f;
     text-align: center;
     color: #b6d2de;
+    filter: drop-shadow(0 0 .5em #75a4ba88);
+
 }
 
 .button {
@@ -39,4 +41,51 @@
     background-size: 80%;
     background-repeat: no-repeat;
     background-position: center center;
+}
+
+input {
+    padding: .5em;
+    margin: .5em;
+    font-size: 1.2em;
+    flex-grow: 1;
+    font-family: 'Ubuntu', sans-serif;
+    color: #141b1f;
+}
+
+input[type=textarea] {
+    background-color: #354A54;
+    border: 2px solid #354A54;
+    border-radius: .5em;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+input[type=textarea]:focus {
+    border: 2px solid #46616e;
+    border-radius: .5em;
+    outline: none;
+    filter: drop-shadow(0 0 .5em #75a4ba88);
+
+}
+
+input[type=submit] {
+    background-color: #354A54;
+    border: 2px solid #46616e;
+    border-radius: .5em;
+    cursor: pointer;
+    transition: .2s;
+
+}
+button {
+    padding: .5em;
+    background-color: #354A54;
+    border: 2px solid #46616e;
+    border-radius: .5em;
+    cursor: pointer;
+
+}
+
+input[type=submit]:hover {
+    color: #75a4ba;
+
 }
