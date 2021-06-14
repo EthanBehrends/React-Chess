@@ -28,13 +28,18 @@ function App() {
   function joinRoom(r) {
     setRoom(r);
     setIsHost(false);
-    console.log(r);
     socket.emit("join", {room: r});
   }
 
   useEffect(() => {
+    function checkIsHost() {
+      return isHost;
+    }
     if(socket !== undefined) {
       socket.on('color', data => setIsWhite(!data))
+      socket.on("startMatch", data => {
+        setIsWhite(data.hostIsWhite === checkIsHost());
+      });
     }
   })
 

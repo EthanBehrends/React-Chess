@@ -89,3 +89,13 @@ input[type=submit]:hover {
     color: #75a4ba;
 
 }
+
+#check {
+    background-image: url('check.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    margin: .5em;
+    height: 1em;
+    width: 1em;
+}

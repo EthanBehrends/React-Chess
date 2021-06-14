@@ -46,12 +46,10 @@ function Chessboard(props) {
         if(props.socket !== undefined){
             props.socket.on("joined", data => active = true);
             props.socket.on("makeMove", data => {
-                console.log(data);
-                if (data.from !== props.socket.id) opponentMove(data.start, data.end);
+                opponentMove(data.start, data.end);
             })
             props.socket.on("gameover", () => active=false)
             props.socket.on("startMatch", () => {
-                props.setIsWhite(!props.isWhite);
                 whitesTurn = true;
                 active=true;
                 resetBoard();
@@ -61,7 +59,7 @@ function Chessboard(props) {
             })
         }
         
-    })
+    }, [props.socket])
 
     useEffect(() => {
         setWhitePOV(props.isWhite)
@@ -83,8 +81,16 @@ function Chessboard(props) {
     }
 
     function resetBoard() {
-        setBoard(defaultBoard);
+        for(let i = 0; i < 8; i++) {
+            for(let j = 0; j < 8; j++) {
+                board[i][j] = defaultBoard[i][j];
+            }
+        }
+        whiteKing = 'E1';
+        blackKing = 'E8';
+        capturedPieces = "";
         forceUpdate();
+        console.log("Board reset.")
     }
     
     function pieceIsThreatened(key, b = board) {
@@ -616,6 +622,7 @@ function Chessboard(props) {
         props.socket.emit('move', {room:props.room, start: iCoord, end: fCoord});
         forceUpdate();
         whitesTurn = !whitesTurn;
+        console.log("Local move")
     }
 
     function opponentMove(iCoord, fCoord) {
@@ -629,6 +636,7 @@ function Chessboard(props) {
         setBoard(tempboard);
         forceUpdate();
         whitesTurn = !whitesTurn;
+        console.log("Opp move")
     }
 
     function testMove(iCoord, fCoord, b) {
@@ -657,7 +665,7 @@ function Chessboard(props) {
                 if(curPossibleMoves.includes(coord)){
                     move(pieceSelected, coord);
                     if (checkForCheckmate(pieceIsWhite(pieceSelected) ? 'black' : 'white')) endGame("Checkmate, " + (pieceIsWhite(pieceSelected) ? 'white' : 'black') + " wins.");
-                    if (checkForStalemate(pieceIsWhite(pieceSelected) ? 'black' : 'white')) endGame("Stalemate, match is a draw.");
+                    else if (checkForStalemate(pieceIsWhite(pieceSelected) ? 'black' : 'white')) endGame("Stalemate, match is a draw.");
                 }
                 isPieceSelected = false;
                 setPossibleMoves([])

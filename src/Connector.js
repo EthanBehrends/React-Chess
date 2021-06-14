@@ -14,7 +14,8 @@ export default function Connector(props) {
             props.socket.emit("rematchAcc", {room: props.room});
         }
         else {
-            props.socket.emit("rematchReq", {room: props.room})
+            props.socket.emit("rematchReq", {room: props.room});
+            setMenu('waiting');
         }
     }
 
@@ -62,8 +63,8 @@ export default function Connector(props) {
             <div id="connectorPopup">
                 <div className="back" onClick={() => setMenu('main')}></div>
                 <h2>Join a Game</h2>
-                <form autocomplete="off" onSubmit={event => {props.joinRoom(formCode.toUpperCase());event.preventDefault()}}>
-                    <input maxlength={6} ref={roomRef} name="room" key="text" type="textarea" value={formCode} onChange={event => {setFormCode(event.target.value)}} placeholder="Enter code"></input>
+                <form autoComplete="off" onSubmit={event => {props.joinRoom(formCode.toUpperCase());event.preventDefault()}}>
+                    <input maxLength={6} ref={roomRef} name="room" key="text" type="textarea" value={formCode} onChange={event => {setFormCode(event.target.value)}} placeholder="Enter code"></input>
                     <input type="submit" value="Join"></input>
                 </form>
             </div>
@@ -117,10 +118,19 @@ export default function Connector(props) {
                 return(
                     <div id="connectorPopup">
                         <h2>{tagline}</h2>
-                        <button onClick={rematch}>Rematch</button>
+                        <button onClick={rematch}>Rematch</button>{oppRematch ? <label id="check"></label> : ""}
                     </div>
                 )
                 break;
+            case 'waiting': 
+                return(
+                    <div id="connectorPopup">
+                        <h2>{tagline}</h2>
+                        <h3>Waiting for opponent...</h3>
+                    </div>
+                )
+                break;
+
             case 'clear':
                 return null;
                 break;
