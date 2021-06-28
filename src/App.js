@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import Chessboard from './Chessboard.js'
 import Connector from './Connector.js'
 import TurnMarker from './TurnMarker.js'
+import AboutPanel from './AboutPanel.js'
 import io from 'socket.io-client'
 
 
@@ -60,6 +61,7 @@ function App() {
       <Chessboard isWhite={isWhite} setIsTurn={setIsTurn} setIsActive={setIsActive} setIsWhite={setIsWhite} isHost={isHost} room={room} socket={socket} />
       <Connector joinRoom={joinRoom} createRoom={createRoom} unhost={unhost} room={room} socket={socket} />
       <TurnMarker isTurn={isTurn} isActive={isActive} />
+      <AboutPanel />
     </div>
   );
 }
