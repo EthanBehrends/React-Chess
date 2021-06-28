@@ -8,24 +8,10 @@
     padding: .5em 2em;
     box-sizing: border-box;
     transform-origin: top left;
+    transform: rotate(-90deg) translate(-100%) skewX(20deg);
     filter: drop-shadow(0 0 .5em #75a4ba88);
 }
 
-@media screen and (max-width: 685px) {
-    #tMarker {
-        transform: rotate(0deg) skewX(-20deg);
-    }
-
-    .turnText {
-        transform: skewX(20deg);
-    }
-}
-@media screen and (min-width: 686px) {
-    #tMarker {
-        transform: rotate(-90deg) translate(-100%) skewX(20deg);
-    }
-
-    .turnText {
-        transform: skewX(-20deg);
-    }
+p {
+    transform: skewX(-20deg);
 }
