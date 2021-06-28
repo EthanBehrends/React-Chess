@@ -1,0 +1,34 @@
+#panelWrapper {
+    position: fixed;    
+    filter: drop-shadow(0 0 .5em #75a4ba88);
+    transition: .2s;
+    background-color: #aabcc7d8;
+    height: 100vh;
+    max-height: 100vh;
+    width: 300px;
+    top: 0px;
+    right:0px;
+    box-sizing: border-box;
+    padding: 1em;
+    color: #141b1f;
+}
+
+#panelTab {
+    position: absolute;
+    top: 0px;
+    left: -30px;
+    background-color: #aabcc7d8;
+    height:30px;
+    width:30px;
+    border-radius: 0 0 0 .5em;
+}
+
+#panelBody {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.notOut {
+    transform: translateX(300px);
+}
