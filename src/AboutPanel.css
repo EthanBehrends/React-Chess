@@ -18,9 +18,16 @@
     top: 0px;
     left: -30px;
     background-color: #aabcc7d8;
+    display: flex;
+    justify-content: center;
+    align-content: center;
     height:30px;
     width:30px;
     border-radius: 0 0 0 .5em;
+}
+
+#panelTab div {
+    transition: .2s;
 }
 
 #panelBody {
@@ -31,4 +38,8 @@
 
 .notOut {
     transform: translateX(300px);
+}
+
+.rotate {
+    transform: rotate(180deg);
 }
