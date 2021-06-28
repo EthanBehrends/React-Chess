@@ -2,6 +2,7 @@ import './App.css';
 import { useEffect, useState } from 'react'
 import Chessboard from './Chessboard.js'
 import Connector from './Connector.js'
+import TurnMarker from './TurnMarker.js'
 import io from 'socket.io-client'
 
 
@@ -10,6 +11,8 @@ function App() {
   const [isHost,setIsHost] = useState(false);
   const [isWhite,setIsWhite] = useState(true);
   const [room,setRoom] = useState("");
+  const [isTurn, setIsTurn] = useState(true);
+  const [isActive, setIsActive] = useState(false);
 
 
   function createRoom(r) {
@@ -54,8 +57,9 @@ function App() {
 
   return (
     <div id="wrapper">
-      <Chessboard isWhite={isWhite} setIsWhite={setIsWhite} isHost={isHost} room={room} socket={socket} />
+      <Chessboard isWhite={isWhite} setIsTurn={setIsTurn} setIsActive={setIsActive} setIsWhite={setIsWhite} isHost={isHost} room={room} socket={socket} />
       <Connector joinRoom={joinRoom} createRoom={createRoom} unhost={unhost} room={room} socket={socket} />
+      <TurnMarker isTurn={isTurn} isActive={isActive} />
     </div>
   );
 }

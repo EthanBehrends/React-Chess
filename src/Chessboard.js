@@ -15,8 +15,6 @@ const defaultBoard = [
 ]
 
 let capturedPieces = "";
-
-let active = false;
 let whitesTurn = true;
 let isPieceSelected = false;
 let pieceSelected;
@@ -42,20 +40,22 @@ function arrayToKey(array) {
 }
 
 function Chessboard(props) {
+    const [active, setActive] = useState(false);
+
     useEffect(() => {
         if(props.socket !== undefined){
-            props.socket.on("joined", data => active = true);
+            props.socket.on("joined", data => setActive(true));
             props.socket.on("makeMove", data => {
                 opponentMove(data.start, data.end);
             })
-            props.socket.on("gameover", () => active=false)
+            props.socket.on("gameover", () => setActive(false))
             props.socket.on("startMatch", () => {
                 whitesTurn = true;
-                active=true;
+                setActive(true);
                 resetBoard();
             })
             props.socket.on('disconnected', data=> {
-                active=false;
+                setActive(false);
             })
         }
         
@@ -64,6 +64,14 @@ function Chessboard(props) {
     useEffect(() => {
         setWhitePOV(props.isWhite)
     }, [props.isWhite]);
+
+    useEffect(() => {
+        props.setIsTurn(whitesTurn === props.isWhite);
+    }, [props.isWhite, whitesTurn]);
+
+    useEffect(() => {
+        props.setIsActive(active);
+    });
 
     function useForceUpdate(){
         const [value, setValue] = useState(0); // integer state
@@ -620,8 +628,8 @@ function Chessboard(props) {
         tempboard[keyToArray(iCoord)[0]][keyToArray(iCoord)[1]] = '.';
         setBoard(tempboard);
         props.socket.emit('move', {room:props.room, start: iCoord, end: fCoord});
-        forceUpdate();
         whitesTurn = !whitesTurn;
+        forceUpdate();
         console.log("Local move")
     }
 
@@ -634,8 +642,8 @@ function Chessboard(props) {
         tempboard[keyToArray(fCoord)[0]][keyToArray(fCoord)[1]] = tempboard[keyToArray(iCoord)[0]][keyToArray(iCoord)[1]];
         tempboard[keyToArray(iCoord)[0]][keyToArray(iCoord)[1]] = '.';
         setBoard(tempboard);
-        forceUpdate();
         whitesTurn = !whitesTurn;
+        forceUpdate();
         console.log("Opp move")
     }
 
@@ -674,7 +682,7 @@ function Chessboard(props) {
     }
 
     function endGame(tagline) {
-        active=false;
+        setActive(false);
         if(props.socket !== undefined) {
             props.socket.emit("endGame", {room: props.room, tagline: tagline})
         }
