@@ -62,16 +62,22 @@ function App() {
       <Connector joinRoom={joinRoom} createRoom={createRoom} unhost={unhost} room={room} socket={socket} />
       <TurnMarker isTurn={isTurn} isActive={isActive} />
       <AboutPanel>
-      <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In gravida tortor nunc, at pulvinar dui hendrerit eget. Donec luctus ex eget sem vestibulum porttitor. Duis rhoncus lorem odio, ac varius urna dapibus eu. Aliquam vitae sem condimentum, pellentesque diam in, dictum erat. Duis finibus mi ut justo consectetur, vitae consequat orci maximus. Donec posuere, justo quis egestas porta, ante turpis ornare sapien, ut volutpat diam nulla in odio. Quisque varius, ante quis porttitor lacinia, mauris magna malesuada metus, aliquet congue mauris sem in neque. Sed eget justo lorem. Curabitur sollicitudin sodales bibendum.
-                </p>
-                <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In gravida tortor nunc, at pulvinar dui hendrerit eget. Donec luctus ex eget sem vestibulum porttitor. Duis rhoncus lorem odio, ac varius urna dapibus eu. Aliquam vitae sem condimentum, pellentesque diam in, dictum erat. Duis finibus mi ut justo consectetur, vitae consequat orci maximus. Donec posuere, justo quis egestas porta, ante turpis ornare sapien, ut volutpat diam nulla in odio. Quisque varius, ante quis porttitor lacinia, mauris magna malesuada metus, aliquet congue mauris sem in neque. Sed eget justo lorem. Curabitur sollicitudin sodales bibendum.
-                </p>
-                <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In gravida tortor nunc, at pulvinar dui hendrerit eget. Donec luctus ex eget sem vestibulum porttitor. Duis rhoncus lorem odio, ac varius urna dapibus eu. Aliquam vitae sem condimentum, pellentesque diam in, dictum erat. Duis finibus mi ut justo consectetur, vitae consequat orci maximus. Donec posuere, justo quis egestas porta, ante turpis ornare sapien, ut volutpat diam nulla in odio. Quisque varius, ante quis porttitor lacinia, mauris magna malesuada metus, aliquet congue mauris sem in neque. Sed eget justo lorem. Curabitur sollicitudin sodales bibendum.
-                </p>
+        <h1>React Chess</h1>
+        <h2>Built by Ethan Behrends</h2>
+        <h3>Spring 2021</h3>
+        <h4>Built with:</h4>
+        <ul>
+          <li>React.js</li>
+          <li>Socket.IO</li>
+          <li>Node.js</li>
+        </ul>
+        <h4>About the project:</h4>
+        <p>This project was a fun exercise. I've always loved playing chess, so creating an online-multiplayer version from the ground up was a great experience.</p>
+        <p>The main objective of the project was not only to showcase my React skills, but also to learn and apply Socket.IO for the first time in a project of my own. I found Socket.IO to be incredibly intuitive, and I will absolutely be using it in future projects.</p>
+        <p>I also felt as though it would be a fun challenge to build my own chess engine from scratch as opposed to using an available library. While challenging at times, it was a worthwhile experience.</p>
+        <p>While some rules from the standard game of chess are missing, I may return to this project and add some of these in the feature (En Passant, Castling, Pawn Promotion, Timed matches, etc.)</p>
       </AboutPanel>
+      <div id="credit">Created by Ethan Behrends</div>
     </div>
   );
 }
